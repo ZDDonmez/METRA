@@ -60,17 +60,17 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--surface-border);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 10px;
     }
 
     /* header styles handled via inline flex */
 
     main {
       flex: 1;
-      padding: 4px 16px 40px;
+      padding: 4px 12px 60px;
       overflow-y: auto;
     }
 
@@ -84,8 +84,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .section-title { font-size: 1.2rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .info-text { font-size: 0.875rem; color: var(--text-muted); }
+    .section-title { font-size: 1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .info-text { font-size: 0.8rem; color: var(--text-muted); }
 
     /* Calorie Ring */
     .ring-container { position: relative; width: 220px; height: 220px; margin: 0 auto 16px; }
@@ -258,10 +258,10 @@
     .meal-dash-btn { 
       background-color: var(--bg-color);
       border: 1px solid var(--surface-border);
-      border-radius: 16px; padding: 12px 16px; color: var(--text-color); font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+      border-radius: 12px; padding: 7px 10px; color: var(--text-color); font-family: var(--font-body); font-weight: 600; font-size: 0.88rem;
       cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03); position: relative; margin-bottom: 8px; overflow: hidden;
-      min-height: 48px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03); position: relative; margin-bottom: 5px; overflow: hidden;
+      min-height: 36px; width: 100%;
     }
     
     .meal-dash-btn span { position: relative; z-index: 2; transition: color 0.4s; }
@@ -284,7 +284,7 @@
     .meal-dash-btn[data-category="snack"]::before { background-image: url('snack_bg.png'); }
     
     .meal-dash-btn:hover { 
-      padding: 32px 20px; color: #ffffff; 
+      padding: 24px 16px; color: #ffffff; 
       border-color: var(--accent-color); box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
@@ -292,7 +292,7 @@
     .meal-dash-btn:hover::before { opacity: 1; transform: scale(1); }
     .meal-dash-btn:hover::after { opacity: 1; }
     
-    .meal-dash-cal { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; background: var(--surface-color); padding: 4px 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: all 0.4s; }
+    .meal-dash-cal { color: var(--text-muted); font-size: 0.75rem; font-weight: 600; background: var(--surface-color); padding: 2px 7px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: all 0.4s; }
     .meal-dash-btn:hover .meal-dash-cal { color: #111; background: #ffffff; text-shadow: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transform: scale(1.05); }
     
     #map { transition: height 0.3s ease; }
@@ -325,12 +325,17 @@
 </style>
 </head>
 <body data-theme="light">
-  <header style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 16px 16px 0 16px; width: 100%;">
-    <button id="profile-modal-btn" class="header-icon-btn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-    </button>
+  <header style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding: 10px 12px 0 12px; width: 100%;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button id="profile-modal-btn" class="header-icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </button>
+      <button id="alarm-modal-btn" class="header-icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      </button>
+    </div>
     <div style="flex: 1; text-align: center;">
-      <h1 style="font-size: 1.6rem; letter-spacing: 4px; font-weight: 800; background: linear-gradient(90deg, var(--text-color), var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">METRA</h1>
+      <h1 style="font-size: 1.35rem; letter-spacing: 4px; font-weight: 800; background: linear-gradient(90deg, var(--text-color), var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">METRA</h1>
     </div>
     <button id="theme-toggle-btn" class="header-icon-btn">
       <div id="theme-icon-container"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></div>
@@ -339,40 +344,40 @@
 
   <main class="dashboard-container">
     <!-- Top Section: Ring + Meals -->
-    <div class="glass-card" style="display: flex; gap: 16px; align-items: center; padding: 16px 12px;">
+    <div class="glass-card" style="display: flex; gap: 10px; align-items: center; padding: 10px;">
       <!-- Left: Ring -->
-      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <div class="ring-container" style="position: relative; margin: 0; width: 100%; max-width: 150px; aspect-ratio: 1/1; display: block;">
+      <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div class="ring-container" style="position: relative; margin: 0; width: 115px; height: 115px; display: block;">
           <svg class="ring-svg" viewBox="0 0 220 220" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg);">
             <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
             <circle class="ring-burned" id="calorie-ring-burned" cx="110" cy="110" r="96"></circle>
             <circle class="ring-progress" id="calorie-ring" cx="110" cy="110" r="96"></circle>
           </svg>
           <div class="calories-info" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <div class="main-cal" style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; color: var(--text-color); line-height: 1;">
+            <div style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--text-color); line-height: 1;">
               <span id="calories-consumed-main">0</span>
             </div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; font-weight: 600;">kcal</div>
-            <div style="font-size: 0.7rem; color: var(--text-muted); opacity: 0.8; margin-top: 4px;">Hedef: <span id="calories-goal">2000</span></div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 1px; font-weight: 600;">kcal</div>
+            <div style="font-size: 0.55rem; color: var(--text-muted); opacity: 0.8; margin-top: 2px;">/ <span id="calories-goal">2000</span></div>
           </div>
         </div>
-        <div style="font-size: 0.85rem; color: #f59e0b; font-weight: 600; margin-top: 8px;">🔥 <span id="ring-burned-cal-display">0</span> kcal yakıldı</div>
-        <p id="goal-exceeded-msg" class="info-text" style="color: var(--error-color); text-align: center; display: none; margin-top: 8px; font-size: 0.85rem;">Hedef aşıldı!</p>
+        <div style="font-size: 0.65rem; color: #f59e0b; font-weight: 600; margin-top: 4px;">🔥 <span id="ring-burned-cal-display">0</span> kcal</div>
+        <p id="goal-exceeded-msg" class="info-text" style="color: var(--error-color); text-align: center; display: none; margin-top: 2px; font-size: 0.65rem;">Aşıldı!</p>
       </div>
 
       <!-- Right: Meal Stack -->
-      <div style="flex: 1.2; display: flex; flex-direction: column;">
+      <div style="flex: 1; display: flex; flex-direction: column;">
         <button class="meal-dash-btn" data-category="breakfast">
-          <span>Kahvaltı</span> <span id="cal-breakfast" class="meal-dash-cal">0</span>
+          <span>Kahvaltı</span><span id="cal-breakfast" class="meal-dash-cal">0</span>
         </button>
         <button class="meal-dash-btn" data-category="lunch">
-          <span>Öğle</span> <span id="cal-lunch" class="meal-dash-cal">0</span>
+          <span>Öğle</span><span id="cal-lunch" class="meal-dash-cal">0</span>
         </button>
         <button class="meal-dash-btn" data-category="dinner">
-          <span>Akşam</span> <span id="cal-dinner" class="meal-dash-cal">0</span>
+          <span>Akşam</span><span id="cal-dinner" class="meal-dash-cal">0</span>
         </button>
-        <button class="meal-dash-btn" data-category="snack">
-          <span>Diğer :)</span> <span id="cal-snack" class="meal-dash-cal">0</span>
+        <button class="meal-dash-btn" data-category="snack" style="margin-bottom: 0;">
+          <span>Diğer :)</span><span id="cal-snack" class="meal-dash-cal">0</span>
         </button>
       </div>
     </div>
@@ -388,9 +393,9 @@
         </select>
       </div>
       
-      <div style="height: 8px; background: var(--bg-color);"></div>
+      <div style="height: 4px; background: var(--bg-color);"></div>
 
-      <div style="position: relative; width: 100%; height: 220px;">
+      <div style="position: relative; width: 100%; height: 155px;">
         <div id="map" style="width: 100%; height: 100%; background: #111; z-index: 1;"></div>
         
         <div id="gps-overlay-start" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; width: 80%;">
@@ -416,80 +421,68 @@
       </div>
     </div>
 
-    <!-- Bottom Section: Alarm & Calendar -->
-    <div class="glass-card">
-      <h2 class="section-title">Spor Hatırlatıcı Alarm</h2>
-      <div class="info-text" style="margin-bottom: 16px;">Her gün antrenman veya su içme vakti geldiğinde telefonunun çalması için takvime ekle.</div>
-      <div style="display: flex; gap: 12px; align-items: center;">
-        <input type="time" id="reminder-time" value="18:30" style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--surface-border); background: var(--bg-color); color: var(--text-color);">
-        <button id="add-to-calendar-btn" class="primary-btn" style="flex: 2; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          Takvime Ekle
-        </button>
-      </div>
-    </div>
+    <!-- Alarm card removed: moved to header alarm-modal-btn -->
 
     <!-- Steps & History Section -->
-    <div class="glass-card" style="padding: 16px;">
-      <!-- Step Counter -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <div class="glass-card" style="padding: 12px 14px;">
+      <!-- Step Counter Row -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <div>
-          <h2 class="section-title" style="margin-bottom: 2px;">&#128247; Adım Sayar</h2>
-          <p class="info-text">Telefonu cebinde tut, otomatik sayar.</p>
+          <h2 class="section-title" style="margin-bottom: 1px; font-size: 0.95rem;">&#128247; Adım Sayar</h2>
+          <p class="info-text" style="font-size: 0.72rem;">Telefonu cebinde tut.</p>
         </div>
         <div style="text-align: right;">
-          <div id="step-count-display" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800; color: var(--accent-color); line-height: 1;">0</div>
-          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">adım bugün</div>
+          <div id="step-count-display" style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--accent-color); line-height: 1;">0</div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 600;">adım bugün</div>
         </div>
       </div>
-      <div style="display: flex; gap: 12px; margin-bottom: 20px;">
-        <div style="flex: 1; background: var(--bg-color); border-radius: 12px; padding: 10px 12px; text-align: center;">
-          <div id="step-km-display" style="font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: var(--text-color);">0.00</div>
-          <div style="font-size: 0.7rem; color: var(--text-muted);">km</div>
+      <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+        <div style="flex: 1; background: var(--bg-color); border-radius: 10px; padding: 7px 8px; text-align: center;">
+          <div id="step-km-display" style="font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--text-color);">0.00</div>
+          <div style="font-size: 0.62rem; color: var(--text-muted);">km</div>
         </div>
-        <div style="flex: 1; background: var(--bg-color); border-radius: 12px; padding: 10px 12px; text-align: center;">
-          <div id="step-cal-display" style="font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: #f59e0b;">0</div>
-          <div style="font-size: 0.7rem; color: var(--text-muted);">kcal</div>
+        <div style="flex: 1; background: var(--bg-color); border-radius: 10px; padding: 7px 8px; text-align: center;">
+          <div id="step-cal-display" style="font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: #f59e0b;">0</div>
+          <div style="font-size: 0.62rem; color: var(--text-muted);">kcal</div>
         </div>
-        <div style="flex: 1; background: var(--bg-color); border-radius: 12px; padding: 10px 12px; text-align: center;">
-          <div id="step-goal-pct" style="font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: var(--accent-color);">0%</div>
-          <div style="font-size: 0.7rem; color: var(--text-muted);">hedef 10K</div>
+        <div style="flex: 1; background: var(--bg-color); border-radius: 10px; padding: 7px 8px; text-align: center;">
+          <div id="step-goal-pct" style="font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--accent-color);">0%</div>
+          <div style="font-size: 0.62rem; color: var(--text-muted);">hedef 10K</div>
         </div>
       </div>
-      <div style="background: var(--bg-color); border-radius: 10px; height: 8px; margin-bottom: 20px; overflow: hidden;">
-        <div id="step-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-color), #00c9a7); border-radius: 10px; transition: width 0.5s ease;"></div>
+      <div style="background: var(--bg-color); border-radius: 8px; height: 5px; margin-bottom: 12px; overflow: hidden;">
+        <div id="step-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-color), #00c9a7); border-radius: 8px; transition: width 0.5s ease;"></div>
       </div>
 
       <!-- 7-Day History Chart -->
-      <div style="border-top: 1px solid var(--surface-border); padding-top: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h3 style="font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--text-color);">&#128200; 7 Günlük Aktivite</h3>
-          <div style="display: flex; gap: 8px; align-items: center; font-size: 0.7rem;">
-            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--accent-color);"></span><span style="color: var(--text-muted);">Adım</span>
-            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: #f59e0b;"></span><span style="color: var(--text-muted);">Kalori</span>
+      <div style="border-top: 1px solid var(--surface-border); padding-top: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-color); margin: 0;">&#128200; 7 Günlük</h3>
+          <div style="display: flex; gap: 6px; align-items: center; font-size: 0.65rem;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--accent-color);"></span><span style="color: var(--text-muted);">Adım</span>
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: #f59e0b;"></span><span style="color: var(--text-muted);">Kcal</span>
           </div>
         </div>
-        <div id="history-chart" class="bar-chart"></div>
+        <div id="history-chart" class="bar-chart" style="height: 70px;"></div>
       </div>
 
-      <!-- Today Summary -->
-      <div style="border-top: 1px solid var(--surface-border); padding-top: 16px; margin-top: 16px;">
-        <h3 style="font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; color: var(--text-color); margin-bottom: 10px;">&#128336; Günlük Özet</h3>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
-          <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-color); border-radius: 10px;">
-            <span style="color: var(--text-muted); font-size: 0.85rem;">Bugün yenilen</span>
-            <span id="hist-today-consumed" style="font-weight: 700; font-size: 0.85rem; color: var(--text-color);">0 kcal</span>
+      <!-- Günlük Özet (3-row compact) -->
+      <div style="border-top: 1px solid var(--surface-border); padding-top: 10px; margin-top: 10px;">
+        <div style="display: flex; gap: 6px;">
+          <div style="flex: 1; padding: 7px 8px; background: var(--bg-color); border-radius: 10px; text-align: center;">
+            <div id="hist-today-consumed" style="font-weight: 700; font-size: 0.85rem; color: var(--text-color);">0</div>
+            <div style="font-size: 0.62rem; color: var(--text-muted);">yenilen</div>
           </div>
-          <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-color); border-radius: 10px;">
-            <span style="color: var(--text-muted); font-size: 0.85rem;">Bugün yakılan</span>
-            <span id="hist-today-burned" style="font-weight: 700; font-size: 0.85rem; color: #f59e0b;">0 kcal</span>
+          <div style="flex: 1; padding: 7px 8px; background: var(--bg-color); border-radius: 10px; text-align: center;">
+            <div id="hist-today-burned" style="font-weight: 700; font-size: 0.85rem; color: #f59e0b;">0</div>
+            <div style="font-size: 0.62rem; color: var(--text-muted);">yakılan</div>
           </div>
-          <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-color); border-radius: 10px;">
-            <span style="color: var(--text-muted); font-size: 0.85rem;">Bugün adım</span>
-            <span id="hist-today-steps" style="font-weight: 700; font-size: 0.85rem; color: var(--accent-color);">0 adım</span>
+          <div style="flex: 1; padding: 7px 8px; background: var(--bg-color); border-radius: 10px; text-align: center;">
+            <div id="hist-today-steps" style="font-weight: 700; font-size: 0.85rem; color: var(--accent-color);">0</div>
+            <div style="font-size: 0.62rem; color: var(--text-muted);">adım</div>
           </div>
         </div>
-        <div id="history-log" style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;"></div>
+        <div id="history-log" style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px;"></div>
       </div>
     </div>
   </main>
@@ -598,7 +591,40 @@
     </div>
   </div>
 
-  <!-- Activity Summary Modal (Preserved) -->
+
+  <!-- Alarm Modal -->
+  <div id="alarm-modal" class="overlay hidden" style="background: rgba(0,0,0,0.6); justify-content: center; align-items: flex-end; padding: 0;">
+    <div class="glass-card" style="width: 100%; margin-bottom: 0; border-radius: 24px 24px 0 0; padding: 24px 20px 40px; animation: fadeSlideUp 0.3s ease;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 class="section-title" style="color: var(--accent-color); margin: 0;">🔔 Alarmlar</h2>
+        <button id="close-alarm-modal" style="background: none; border: none; color: var(--text-muted); font-size: 1.8rem; cursor: pointer; width: auto; padding: 0 8px; box-shadow: none; margin: 0; line-height: 1;">&times;</button>
+      </div>
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">🏃 Spor Alarmı</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="time" id="reminder-time" value="18:30" style="flex: 1; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--surface-border); background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
+          <button id="add-to-calendar-btn" style="flex: 1; margin: 0; padding: 12px; display: flex; justify-content: center; align-items: center; gap: 6px; border-radius: 10px; background: var(--accent-color); border: none; cursor: pointer; font-weight: 700; font-size: 0.9rem; color: #000;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Takvime Ekle
+          </button>
+        </div>
+      </div>
+      <div style="padding: 14px; background: rgba(14,165,233,0.06); border: 1px solid rgba(14,165,233,0.2); border-radius: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #0ea5e9;">💧 Su Hatırlatıcı</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Her 2 saatte bir bildirim</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="water-alarm-toggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div id="activity-summary-modal" class="overlay hidden" style="justify-content: center; align-items: center; padding: 20px;">
     <div class="glass-card" id="summary-card" style="width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--accent-color);">
       <h2 class="section-title" id="summary-title" style="color: var(--accent-color);">Egzersiz Özeti</h2>
@@ -959,9 +985,9 @@
       const histConsumed = document.getElementById('hist-today-consumed');
       const histBurned = document.getElementById('hist-today-burned');
       const histSteps = document.getElementById('hist-today-steps');
-      if (histConsumed) histConsumed.textContent = state.consumedCalories + ' kcal';
-      if (histBurned) histBurned.textContent = state.burnedCalories + ' kcal';
-      if (histSteps) histSteps.textContent = (state.stepCount || 0) + ' adım';
+      if (histConsumed) histConsumed.textContent = state.consumedCalories;
+      if (histBurned) histBurned.textContent = state.burnedCalories;
+      if (histSteps) histSteps.textContent = (state.stepCount || 0);
 
       updateStepDisplay();
       updateHistoryChart();
@@ -1041,6 +1067,14 @@
       // Profile Modal
       el.profileModalBtn.addEventListener('click', () => el.profileModal.classList.remove('hidden'));
       el.closeProfileModal.addEventListener('click', () => el.profileModal.classList.add('hidden'));
+
+      // Alarm Modal
+      const alarmModalBtn = document.getElementById('alarm-modal-btn');
+      const alarmModal = document.getElementById('alarm-modal');
+      const closeAlarmModal = document.getElementById('close-alarm-modal');
+      if (alarmModalBtn) alarmModalBtn.addEventListener('click', () => alarmModal.classList.remove('hidden'));
+      if (closeAlarmModal) closeAlarmModal.addEventListener('click', () => alarmModal.classList.add('hidden'));
+      if (alarmModal) alarmModal.addEventListener('click', (e) => { if (e.target === alarmModal) alarmModal.classList.add('hidden'); });
 
       // Water Alarm Toggle
       let waterIntervalId = null;
