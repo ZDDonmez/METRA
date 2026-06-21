@@ -420,7 +420,14 @@
         </div>
       </div>
     </div>
-
+    <!-- Last route info + share -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 0 12px; margin-top: -6px; margin-bottom: 4px;">
+      <div id="last-route-badge" style="font-size: 0.72rem; color: var(--text-muted); flex: 1;"></div>
+      <button id="share-route-btn" style="display: none; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 20px; background: var(--accent-color); border: none; cursor: pointer; font-size: 0.72rem; font-weight: 700; color: #000; flex-shrink: 0;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        Paylaş
+      </button>
+    </div>
     <!-- Alarm card removed: moved to header alarm-modal-btn -->
 
     <!-- Steps & History Section -->
@@ -647,7 +654,7 @@
   <div id="toast" class="toast">Kaydedildi!</div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     const foodDatabase = [
       // Kahvaltılıklar & Süt Ürünleri
@@ -813,7 +820,7 @@
     let state = {
       profileSetup: false, gender: 'male', age: 25, height: 175, activityLevel: 1.55,
       targetCalories: 2000, consumedCalories: 0, burnedCalories: 0, meals: [], walks: [],
-      lastDate: null, userWeight: 70, stepCount: 0, history: {}
+      lastDate: null, userWeight: 70, stepCount: 0, history: {}, lastWalkPath: [], lastWalkMeta: null
     };
 
     const RING_CIRCUMFERENCE = 2 * Math.PI * 96;
@@ -889,13 +896,24 @@
     }
     
     
-    let map, marker, pathLine;
+    let map, marker, pathLine, lastRouteLine;
     function initMapPlaceholder() {
       if (!map) {
         map = L.map('map', { zoomControl: false, attributionControl: false }).setView([41.0082, 28.9784], 12);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
-        // Let it be a dark beautiful background map of Istanbul by default
       }
+      // Restore last walk path if available
+      const lp = state.lastWalkPath;
+      if (lp && lp.length > 1) {
+        if (lastRouteLine) map.removeLayer(lastRouteLine);
+        lastRouteLine = L.polyline(lp, {color: '#00F5C3', weight: 4, opacity: 0.85}).addTo(map);
+        map.fitBounds(lastRouteLine.getBounds(), { padding: [20, 20] });
+        L.circleMarker(lp[0], {radius: 6, color: '#4ade80', fillColor: '#4ade80', fillOpacity: 1}).addTo(map)
+          .bindPopup('Başlangıç');
+        L.circleMarker(lp[lp.length-1], {radius: 6, color: '#f87171', fillColor: '#f87171', fillOpacity: 1}).addTo(map)
+          .bindPopup('Bitiş');
+      }
+      updateShareBadge();
     }
 
     function checkOnboarding() {
@@ -1442,6 +1460,25 @@ END:VCALENDAR`;
         const met = activityMets[type] || 3.5;
         const currentWalkCal = Math.round(met * state.userWeight * (walkSeconds / 3600));
         
+        // Save last walk path to state so it persists
+        if (walkPath.length > 1) {
+          state.lastWalkPath = [...walkPath];
+          state.lastWalkMeta = {
+            type, cal: currentWalkCal, distance: walkDistance.toFixed(2),
+            date: new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }),
+            time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
+          };
+        }
+
+        // Keep the finished path visible on map
+        if (pathLine) {
+          if (lastRouteLine) map.removeLayer(lastRouteLine);
+          lastRouteLine = pathLine;
+          pathLine = null;
+        }
+        if (marker) { map.removeLayer(marker); marker = null; }
+        updateShareBadge();
+        
         if (currentWalkCal > 0 || walkDistance > 0) {
           state.burnedCalories += currentWalkCal;
           const typeNames = { walk: '🏃‍♂️ Yürüyüş', run: '🏃‍♀️ Koşu', bike: '🚴 Bisiklet' };
@@ -1458,8 +1495,24 @@ END:VCALENDAR`;
           document.getElementById('summary-cal').textContent = currentWalkCal;
           document.getElementById('activity-summary-modal').classList.remove('hidden');
           showToast('Egzersiz kaydedildi 💪');
+        } else {
+          saveState();
         }
       });
+    }
+
+    function updateShareBadge() {
+      const badge = document.getElementById('last-route-badge');
+      const shareBtn = document.getElementById('share-route-btn');
+      if (!badge || !shareBtn) return;
+      const m = state.lastWalkMeta;
+      if (m) {
+        badge.innerHTML = `<span style="color: #4ade80;">&#128205; Son rota:</span> ${m.distance} km · ${m.cal} kcal · ${m.date} ${m.time}`;
+        shareBtn.style.display = 'flex';
+      } else {
+        badge.innerHTML = '';
+        shareBtn.style.display = 'none';
+      }
     }
 
     // ── Step Counter ──────────────────────────────────────────
@@ -1604,6 +1657,39 @@ END:VCALENDAR`;
     window.onload = function() {
       init();
       initStepCounter();
+
+      // Share route button
+      const shareBtn = document.getElementById('share-route-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const mapEl = document.getElementById('map');
+          if (!mapEl) return;
+          showToast('Ekran görüntüsü alınıyor...');
+          try {
+            const canvas = await html2canvas(mapEl, { useCORS: true, allowTaint: true, scale: 2 });
+            canvas.toBlob(async (blob) => {
+              const m = state.lastWalkMeta;
+              const fileName = `metra-rota-${m ? m.date.replace(/\s/g,'_') : 'paylasim'}.png`;
+              if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
+                await navigator.share({
+                  title: 'METRA Rota',
+                  text: m ? `${m.distance} km · ${m.cal} kcal · ${m.date} ${m.time} - METRA ile kaydedildi` : 'METRA rotam',
+                  files: [new File([blob], fileName, { type: 'image/png' })]
+                });
+              } else {
+                // Fallback: download
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = fileName;
+                a.click();
+                showToast('Harita kaydedildi!');
+              }
+            }, 'image/png');
+          } catch(e) {
+            showToast('Paylaşım hatası: ' + e.message);
+          }
+        });
+      }
     };
   </script>
 </body>
